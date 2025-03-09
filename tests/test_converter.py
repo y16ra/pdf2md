@@ -1,7 +1,7 @@
 import os
 import unittest
-from unittest.mock import patch, mock_open, MagicMock
 from pathlib import Path
+from unittest.mock import MagicMock, mock_open, patch
 
 from pdf2md.converter import PDF2MarkdownConverter
 
@@ -23,7 +23,7 @@ class TestPDF2MarkdownConverter(unittest.TestCase):
         if "MISTRAL_API_KEY" in os.environ:
             del os.environ["MISTRAL_API_KEY"]
 
-    @patch('pdf2md.converter.load_dotenv')
+    @patch("pdf2md.converter.load_dotenv")
     @patch.dict(os.environ, {}, clear=True)
     def test_init_without_api_key(self, mock_load_dotenv):
         """API keyが設定されていない場合のテスト"""
@@ -32,10 +32,12 @@ class TestPDF2MarkdownConverter(unittest.TestCase):
 
         with self.assertRaises(ValueError) as context:
             PDF2MarkdownConverter()
-        
-        self.assertEqual(str(context.exception), "MISTRAL_API_KEY environment variable is not set")
 
-    @patch('pdf2md.converter.requests.post')
+        self.assertEqual(
+            str(context.exception), "MISTRAL_API_KEY environment variable is not set"
+        )
+
+    @patch("pdf2md.converter.requests.post")
     def test_upload_file_success(self, mock_post):
         """ファイルアップロードの成功テスト"""
         # モックの設定
@@ -49,14 +51,15 @@ class TestPDF2MarkdownConverter(unittest.TestCase):
         mock_file = mock_open()
         mock_file.return_value.read.return_value = test_file_data
 
-        with patch('builtins.open', mock_file), \
-             patch('os.path.exists', return_value=True):
+        with patch("builtins.open", mock_file), patch(
+            "os.path.exists", return_value=True
+        ):
             result = self.converter._upload_file(self.test_pdf_path)
 
         self.assertEqual(result, {"id": "test_file_id"})
         mock_post.assert_called_once()
 
-    @patch('pdf2md.converter.requests.post')
+    @patch("pdf2md.converter.requests.post")
     def test_upload_file_failure(self, mock_post):
         """ファイルアップロードの失敗テスト"""
         # モックの設定
@@ -70,14 +73,15 @@ class TestPDF2MarkdownConverter(unittest.TestCase):
         mock_file = mock_open()
         mock_file.return_value.read.return_value = test_file_data
 
-        with patch('builtins.open', mock_file), \
-             patch('os.path.exists', return_value=True):
+        with patch("builtins.open", mock_file), patch(
+            "os.path.exists", return_value=True
+        ):
             with self.assertRaises(Exception) as context:
                 self.converter._upload_file(self.test_pdf_path)
 
         self.assertIn("APIリクエストエラー", str(context.exception))
 
-    @patch('pdf2md.converter.requests.get')
+    @patch("pdf2md.converter.requests.get")
     def test_get_signed_url_success(self, mock_get):
         """署名付きURL取得の成功テスト"""
         # モックの設定
@@ -91,7 +95,7 @@ class TestPDF2MarkdownConverter(unittest.TestCase):
         self.assertEqual(result, "https://example.com/signed_url")
         mock_get.assert_called_once()
 
-    @patch('pdf2md.converter.requests.get')
+    @patch("pdf2md.converter.requests.get")
     def test_get_signed_url_failure(self, mock_get):
         """署名付きURL取得の失敗テスト"""
         # モックの設定
@@ -105,8 +109,8 @@ class TestPDF2MarkdownConverter(unittest.TestCase):
 
         self.assertIn("Failed to get signed URL", str(context.exception))
 
-    @patch('pdf2md.converter.requests.post')
-    @patch('pdf2md.converter.requests.get')
+    @patch("pdf2md.converter.requests.post")
+    @patch("pdf2md.converter.requests.get")
     def test_convert_with_upload_success(self, mock_get, mock_post):
         """convert_with_uploadメソッドの成功テスト"""
         # アップロードのモック
@@ -117,7 +121,9 @@ class TestPDF2MarkdownConverter(unittest.TestCase):
         # 署名付きURLのモック
         signed_url_response = MagicMock()
         signed_url_response.status_code = 200
-        signed_url_response.json.return_value = {"url": "https://example.com/signed_url"}
+        signed_url_response.json.return_value = {
+            "url": "https://example.com/signed_url"
+        }
 
         # 変換APIのモック
         convert_response = MagicMock()
@@ -134,8 +140,9 @@ class TestPDF2MarkdownConverter(unittest.TestCase):
         mock_file = mock_open()
         mock_file.return_value.read.return_value = test_file_data
 
-        with patch('builtins.open', mock_file), \
-             patch('os.path.exists', return_value=True):
+        with patch("builtins.open", mock_file), patch(
+            "os.path.exists", return_value=True
+        ):
             result = self.converter.convert_with_upload(self.test_pdf_path)
 
         self.assertTrue(isinstance(result, str))
@@ -143,7 +150,7 @@ class TestPDF2MarkdownConverter(unittest.TestCase):
         mock_post.assert_called()
         mock_get.assert_called_once()
 
-    @patch('pdf2md.converter.requests.post')
+    @patch("pdf2md.converter.requests.post")
     def test_convert_success(self, mock_post):
         """convertメソッドの成功テスト"""
         # モックの設定
@@ -159,8 +166,9 @@ class TestPDF2MarkdownConverter(unittest.TestCase):
         mock_file = mock_open()
         mock_file.return_value.read.return_value = test_file_data
 
-        with patch('builtins.open', mock_file), \
-             patch('os.path.exists', return_value=True):
+        with patch("builtins.open", mock_file), patch(
+            "os.path.exists", return_value=True
+        ):
             result = self.converter.convert(self.test_pdf_path)
 
         self.assertTrue(isinstance(result, str))
@@ -178,5 +186,5 @@ class TestPDF2MarkdownConverter(unittest.TestCase):
             self.converter.convert_with_upload("non_existent.pdf")
 
 
-if __name__ == '__main__':
-    unittest.main() 
+if __name__ == "__main__":
+    unittest.main()
