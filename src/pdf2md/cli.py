@@ -2,6 +2,16 @@ import argparse
 from pathlib import Path
 from .converter import PDF2MarkdownConverter
 
+'''
+PDFファイルをMarkdownに変換するコマンドラインツール
+
+使用方法:
+python -m pdf2md.cli <PDFファイルのパス> [オプション]
+
+オプション:
+- --output, -o: 出力Markdownファイルのパス（オプション）
+- --upload, -u: ファイルをアップロードして変換（大きなファイル向け）
+'''
 def main():
     parser = argparse.ArgumentParser(description='PDFファイルをMarkdownに変換します')
     parser.add_argument('pdf_path', type=str, help='入力PDFファイルのパス')
@@ -21,5 +31,6 @@ def main():
         print(f"エラーが発生しました: {str(e)}")
         exit(1)
 
+# このファイルが直接実行された場合にのみ実行される
 if __name__ == '__main__':
-    main() 
+    main()
