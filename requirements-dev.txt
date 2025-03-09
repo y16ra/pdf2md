@@ -1,0 +1,15 @@
+-r requirements.txt
+
+# テスト関連
+pytest>=8.3.5
+pytest-cov>=4.1.0
+pytest-mock>=3.12.0
+
+# コード品質
+flake8>=7.0.0
+black>=24.2.0
+isort>=5.13.0
+mypy>=1.8.0
+
+# 型チェック用
+types-requests>=2.31.0 
