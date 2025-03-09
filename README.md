@@ -15,6 +15,9 @@ source venv/bin/activate  # Windowsの場合: venv\Scripts\activate
 
 # 依存パッケージのインストール
 pip install -r requirements.txt
+
+# 開発用パッケージのインストール（テスト実行に必要）
+pip install -e .
 ```
 
 ### 2. パッケージとしてのインストール
@@ -87,6 +90,33 @@ python -m pdf2md.cli input.pdf -o output.md
 - コマンドラインインターフェース
 - カスタム出力パスのサポート
 - 大きなファイルのサポート（アップロード方式）
+
+## テストの実行
+
+テストを実行するには、以下のコマンドを使用します：
+
+```bash
+# Makefileを使用してテストを実行（推奨）
+make test
+
+# カバレッジレポートを生成する場合
+make test-report
+```
+
+または、直接pytestを使用することもできます：
+
+```bash
+# すべてのテストを実行
+pytest
+
+# カバレッジレポート付きでテストを実行
+pytest --cov=pdf2md
+
+# 詳細なカバレッジレポートをHTML形式で生成
+pytest --cov=pdf2md --cov-report=html
+```
+
+テストを実行する前に、必ず開発モードでパッケージをインストール（`pip install -e .`）していることを確認してください。
 
 ## ライセンス
 
