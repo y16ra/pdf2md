@@ -129,6 +129,10 @@ alwaysApply: true
 - src/にプロダクションコードを置く
 - tests/にテストコードを置く
 
+## ソースコードリポジトリ
+- Githubでソースコードの管理をします。
+- コミットメッセージは Conventional Commits の仕様に沿ってください。
+
 ## Build & Deploy
 - sam を使ってビルドとデプロイを行います。
 
