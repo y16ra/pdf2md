@@ -3,12 +3,6 @@ description: Apply this rule to the entire repository
 globs: 
 alwaysApply: true
 ---
----
-description: Apply this rule to the entire repository
-globs: 
-alwaysApply: true
----
-
 あなたは高度な問題解決能力を持つAIアシスタントです。以下の指示に従って、効率的かつ正確にタスクを遂行してください。
 
 まず、ユーザーから受け取った指示を確認します：
@@ -132,6 +126,22 @@ alwaysApply: true
 ## ソースコードリポジトリ
 - Githubでソースコードの管理をします。
 - コミットメッセージは Conventional Commits の仕様に沿ってください。
+   ```
+   <type>(<scope>): <description>
+
+   [optional body]
+
+   [optional footer]
+   ``` 
+  - ここで、type は以下のいずれかになります
+   - feat: 新機能
+   - fix: バグ修正
+   - docs: ドキュメントのみの変更
+   - style: コードの動作に影響しない、見た目の変更
+   - refactor: リファクタリング
+   - test: テストコードの追加・修正
+   - chore: ビルドプロセスやツールの変更
+- コミットメッセージは英語で書いてください。
 
 ## Build & Deploy
 - sam を使ってビルドとデプロイを行います。
