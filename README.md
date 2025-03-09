@@ -41,11 +41,17 @@ MISTRAL_API_KEY=your_api_key_here
 
 パッケージをインストールした場合：
 ```bash
-# 基本的な使用方法
+# 基本的な使用方法（小さなファイル向け）
 pdf2md input.pdf
+
+# 大きなファイルの変換（ファイルアップロード方式）
+pdf2md input.pdf --upload
 
 # 出力ファイルを指定する場合
 pdf2md input.pdf -o output.md
+
+# アップロード方式で出力ファイルを指定する場合
+pdf2md input.pdf --upload -o output.md
 ```
 
 開発モードの場合：
@@ -53,9 +59,26 @@ pdf2md input.pdf -o output.md
 # 基本的な使用方法
 python -m pdf2md.cli input.pdf
 
+# 大きなファイルの変換（ファイルアップロード方式）
+python -m pdf2md.cli input.pdf --upload
+
 # 出力ファイルを指定する場合
 python -m pdf2md.cli input.pdf -o output.md
 ```
+
+## 変換方式
+
+このツールには2つの変換方式があります：
+
+1. 直接変換方式（デフォルト）
+   - PDFファイルを直接APIに送信
+   - 小さなファイルに適している
+   - 追加のAPIコールが不要
+
+2. アップロード方式（`--upload`オプション）
+   - PDFファイルを一度サーバーにアップロード
+   - 大きなファイルに適している
+   - 処理が2段階（アップロード→変換）
 
 ## 機能
 
@@ -63,6 +86,7 @@ python -m pdf2md.cli input.pdf -o output.md
 - Markdown形式での保存
 - コマンドラインインターフェース
 - カスタム出力パスのサポート
+- 大きなファイルのサポート（アップロード方式）
 
 ## ライセンス
 
